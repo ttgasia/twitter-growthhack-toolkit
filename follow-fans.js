@@ -1,22 +1,67 @@
-var T = require('./index.js'),
+var T = require('./index'),
+  utils = require('./utils'),
   argv = require('minimist')(process.argv.slice(2)),
-  stopId = argv['stopId'] || -1; //348336389 = omgisarcasm
+  ownerUsername = argv['username'] || -1,
+  ownerUserId = argv['userId'] || -1;
 
-T.get('friends/ids', {
-  screen_name: 'geekykaran',
-  count: 2000
-}, function(err, data, response) {
-  var idList = data.ids,
-    stopId = 348336389, //348336389 = omgisarcasm
-    i = 0;
-  while (idList[i] !== stopId) {
-    var id = idList[i];
-    console.log('Unfollowing');
-    T.post('friendships/destroy', {
-      user_id: id
+var favoriteStream = T.stream('user');
+
+favoriteStream.on('favorite', function(tweet) {
+  if (ownerUsername !== tweet.source.screen_name) {
+    console.log('Favorite received. Following @' + tweet.source.screen_name);
+    T.post('friendships/create', {
+      user_id: tweet.source.id
     }, function(err, data, response) {
-      console.log('Unfollowed');
+      if (err) {
+        console.log(err);
+      }
     });
-    i++;
+  }
+});
+
+favoriteStream.on('follow', function(tweet) {
+  if (ownerUsername !== tweet.source.screen_name) {
+    console.log('Follow received. Following @' + tweet.source.screen_name);
+    T.post('friendships/create', {
+      user_id: tweet.source.id
+    }, function(err, data, response) {
+      if (err) {
+        console.log(err);
+      }
+    });
+  }
+});
+
+
+
+var statusStream = T.stream('statuses/filter', {
+  track: ownerUsername
+});
+
+statusStream.on('tweet', function(tweet) {
+  if (ownerUsername !== tweet.user.screen_name) {
+    //Native retweet
+    if (tweet.retweeted_status && tweet.retweeted_status.retweet_count > 0) {
+      console.log('Retweet received. Following @' + tweet.user.screen_name);
+      T.post('friendships/create', {
+        user_id: tweet.user.id
+      }, function(err, data, response) {
+        if (err) {
+          console.log(err);
+        }
+      });
+    }
+    /* Reply */
+    else {
+      console.log(tweet.entities.user_mentions);
+      console.log('Reply/Mention received. Favorited tweet by @' + tweet.user.screen_name);
+      T.post('favorites/create', {
+        id: tweet.id_str
+      }, function(err, data, response) {
+        if (err) {
+          console.log(err);
+        }
+      });
+    }
   }
 });
