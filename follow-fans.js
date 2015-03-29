@@ -53,15 +53,8 @@ statusStream.on('tweet', function(tweet) {
     }
     /* Reply */
     else {
-      console.log(tweet.entities.user_mentions);
       console.log('Reply/Mention received. Favorited tweet by @' + tweet.user.screen_name);
-      T.post('favorites/create', {
-        id: tweet.id_str
-      }, function(err, data, response) {
-        if (err) {
-          console.log(err);
-        }
-      });
+      utils.doFavorite(tweet.id_str);
     }
   }
 });

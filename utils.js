@@ -1,3 +1,5 @@
+var T = require('./index');
+
 module.exports = {
   isPresentInUserMention: function(userMentionArray, userId) {
     var isPresent = false;
@@ -13,5 +15,15 @@ module.exports = {
     });
 
     return isPresent;
+  },
+
+  doFavorite: function(id) {
+    T.post('favorites/create', {
+      id: id
+    }, function(err, data, response) {
+      if (err && err.code !== 139) { //Error codes: {139: Already favorited status}
+        console.log(err);
+      }
+    });
   }
 }
