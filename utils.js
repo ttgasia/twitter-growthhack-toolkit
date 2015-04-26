@@ -25,5 +25,31 @@ module.exports = {
         console.log(err);
       }
     });
+  },
+
+  doTweet: function(text, callback) {
+    T.post('statuses/update', {
+      status: text
+    }, function(err, data, response) {
+      callback(err, data);
+    });
+  },
+
+  getUsername: function(idList, callback) {
+    T.get('users/lookup', {
+      user_id: idList
+    }, function(err, data, response) {
+      callback(err, data);
+    });
+  },
+
+  doFollow: function(id, callback) {
+    T.post('friendships/create', {
+      user_id: id
+    }, function(err, data, response) {
+      if (err) {
+        console.log(err);
+      }
+    });
   }
 }
