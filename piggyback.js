@@ -5,7 +5,7 @@ var T = require('./index'),
   followList,
   whitelistedWords;
 
-followList = [33057154, 1605891337, 609718712, 14894250, 2792078121, 18185124, 26554000, 2332401396, 468290519, 409435591, 233430873, 1705885393, 159642250, 14426771, 2604068238, 1890842214, 17093617, 2670122929, 259725229, 25458378]; //JeffSheehan, GrowthHackerAm, GrowthHackingWP, fab_brianson, m1lem, jeffbullas, RebekahRadice, loveandstartups, SharonTighe, Onboardly, Notebook, GrowthHackers, GrowthHacker, SeanEllis, thepressfarm, seotomize, hootsuite, GrowthHackerSEO, ValaAfshar, AskAaronLee
+followList = [274016135, 5625972, 26274219, 17601281, 65117552, ]; //EventMB, eventbrite, BizBash, SmartMeetings, SuccessfulMtgs
 
 var statusStream = T.stream('statuses/filter', {
   follow: followList
@@ -17,21 +17,21 @@ statusStream.on('tweet', function(tweet) {
     console.log(tweet.text);
     var lowercaseTweet = tweet.text.toLowerCase();
     if (
-      lowercaseTweet.indexOf('social') === -1 &&
-      lowercaseTweet.indexOf('market') === -1 &&
-      lowercaseTweet.indexOf('brand') === -1 &&
-      lowercaseTweet.indexOf('onboard') === -1 &&
-      lowercaseTweet.indexOf('lead') === -1 &&
-      lowercaseTweet.indexOf('seo') === -1 &&
-      lowercaseTweet.indexOf('sell') === -1 &&
-      lowercaseTweet.indexOf('content') === -1 &&
-      lowercaseTweet.indexOf('analytics') === -1 &&
-      lowercaseTweet.indexOf('growth') === -1 &&
-      lowercaseTweet.indexOf('startup') === -1 &&
-      lowercaseTweet.indexOf('entrepreneur') === -1 &&
-      lowercaseTweet.indexOf('blog') === -1 &&
-      tweet.user.id !== 2246032237 && //iamjtsuccess
-      tweet.user.id !== 25458378 //AskAaronLee
+      lowercaseTweet.indexOf('event') === -1 &&
+      lowercaseTweet.indexOf('eventprof') === -1 &&
+      lowercaseTweet.indexOf('meetings') === -1 &&
+      lowercaseTweet.indexOf('meetingprof') === -1 &&
+      lowercaseTweet.indexOf('MICE') === -1 &&
+      lowercaseTweet.indexOf('marketing') === -1 &&
+      lowercaseTweet.indexOf('exhibition') === -1 &&
+      lowercaseTweet.indexOf('incentive') === -1 &&
+      lowercaseTweet.indexOf('conference') === -1 &&
+      lowercaseTweet.indexOf('association') === -1 &&
+      lowercaseTweet.indexOf('business') === -1 &&
+      lowercaseTweet.indexOf('networking') === -1 &&
+      lowercaseTweet.indexOf('education') === -1 &&
+      tweet.user.id !== 274016135 && //EventMB
+      tweet.user.id !== 17601281 //SmartMeetings
     ) {
       console.log('No status update. Did not pass sanity check.')
       console.log('-----');
